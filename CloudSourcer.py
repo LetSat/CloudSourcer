@@ -67,9 +67,8 @@ class FreeServer:
 
 class Filter:
     
-    def __init__(self, multFactor, filename):
+    def __init__(self, filename):
         self.filename = filename
-        self.multFactor = multFactor
         
     def build(self, panoFiles, debug=True):
         
@@ -125,7 +124,7 @@ class Filter:
         
         np.add(average_img, average / (casesTaken-3), out=average_img, casting="unsafe")
         
-        self.average_img = (average_img*(self.multFactor)).astype(np.uint8)
+        self.average_img = average_img.astype(np.uint8)
         cv2.imwrite(self.filename, self.average_img)
         
         if debug:
@@ -138,17 +137,24 @@ class Filter:
         self.average_img = cv2.cvtColor(cv2.imread(self.filename), cv2.COLOR_BGR2GRAY)
         return self.average_img
     
-    def getFilteredPano(self, imageFile, clahe):
-        img_gray = self.__readImage(imageFile)
+    def getFilteredPano(self, imageFile, medBlur, histEq, multFactor = 1., passes = 1):
+        img = self.__readImage(imageFile)
         
-        img_corr = cv2.subtract(img_gray, self.average_img);
-        
-        if clahe:
-            clahe = cv2.createCLAHE(clipLimit=2, tileGridSize=(200, 200))
-            return clahe.apply(img_corr)
-        else:
-            return img_corr
-    
+        average_img = (self.average_img*(multFactor)).astype(np.uint8)
+	
+	for i in range(0, passes):
+            img = cv2.subtract(img, average_img);
+       
+	    if medBlur:
+	        print "Median Blur..."
+	        img = cv2.medianBlur(img, 3)
+	    
+	    if histEq:
+	        print "Equalizing histogram..."
+	        img = cv2.equalizeHist(img)
+	
+	return img
+
     def __readImage(self, filename):
         img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2GRAY) 
         return img

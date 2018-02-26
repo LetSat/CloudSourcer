@@ -26,7 +26,7 @@ for time in huginBatches:
             print "Skip %s" % panoSrc
             
     filterFile = "FilteredPanos/filter_%s_%s.tif" % (time, MONTH)
-    cs = CloudSourcer.Filter(1, filterFile)
+    cs = CloudSourcer.Filter(filterFile)
     
     if os.path.exists(filterFile):
         print "Use filter %s" % filterFile
@@ -40,7 +40,7 @@ for time in huginBatches:
         filteredPano = "FilteredPanos/%s_%s_%s.tif" % (time, MONTH, day)
         if os.path.exists(panoSrc):
             print "Use %s" % panoSrc
-            filteredImg = cs.getFilteredPano(panoSrc, True)
+            filteredImg = cs.getFilteredPano(panoSrc, False, True, 0.95, 1)
             cv2.imwrite(filteredPano, filteredImg)
             print "Exported %s " % filteredPano
         else:
