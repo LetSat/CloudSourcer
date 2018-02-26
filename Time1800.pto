@@ -53,7 +53,7 @@ c n0 N1 x1728 y762 X541 Y797 t0
 #hugin_hdrmergeOptions -m avg -c
 #hugin_verdandiOptions 
 #hugin_outputLDRBlended true
-#hugin_outputLDRLayers true
+#hugin_outputLDRLayers false
 #hugin_outputLDRExposureRemapped false
 #hugin_outputLDRExposureLayers false
 #hugin_outputLDRExposureBlended false
