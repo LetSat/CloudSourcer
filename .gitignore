@@ -1,0 +1,7 @@
+*.pyc
+*.jpg
+*.jpeg
+*.png
+FilteredPanos/*.tif
+RawPanos/*.tif
+Sources/*.png
